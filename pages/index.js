@@ -1,59 +1,26 @@
-import Head from 'next/head';
-import styles from '../styles/Home.module.css';
+import TopForm from "../components/TopForm";
+import "../utils/i18n";
+import Chat from "../components/Chat";
 
 export default function Home() {
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-      </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+    return (
+        <div className="body center">
+            <div className="flex w-full max-w-[1600px] flex-col justify-center md:flex-row">
+                <div className="div-left md:mr-6 md:w-8/12">
+                    <div className="search h-[100px] bg-gray-200">
+                        <TopForm />
+                    </div>
+                    <div className="video mt-4 bg-gray-200 ">
+                        <div className="video-title h-[40px] bg-orange-200"></div>
+                        <video className="aspect-video w-full"></video>
+                        <div className="controls h-[50px] bg-red-200"></div>
+                    </div>
+                </div>
+                <div className="body-right chat mt-8 flex min-h-[500px]  flex-col bg-gray-200 md:mt-0 md:min-h-max md:w-3/12">
+                    <div className="grow"></div>
+                    <Chat />
+                </div>
+            </div>
         </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a href="https://next.new" target="_blank" rel="noopener noreferrer">
-          Created with&nbsp;<b>next.new</b>&nbsp;⚡️
-        </a>
-      </footer>
-    </div>
-  );
+    );
 }
