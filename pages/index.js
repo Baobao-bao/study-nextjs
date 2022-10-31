@@ -1,6 +1,7 @@
 import TopForm from "../components/TopForm";
 import "../utils/i18n";
 import Chat from "../components/Chat";
+import Video from "../components/Video";
 
 export default function Home() {
     return (
@@ -12,7 +13,12 @@ export default function Home() {
                     </div>
                     <div className="video mt-4 bg-gray-200 ">
                         <div className="video-title h-[40px] bg-orange-200"></div>
-                        <video className="aspect-video w-full"></video>
+                        {/* <video
+                            controls
+                            className="w-sfull aspect-video"
+                            src="http://1252244310.vod2.myqcloud.com/9089671fvodtransgzp1252244310/8178d9898602268011578964191/v.f100030.mp4"
+                        ></video> */}
+                        <Video />
                         <div className="controls h-[50px] bg-red-200"></div>
                     </div>
                 </div>
