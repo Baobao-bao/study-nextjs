@@ -29,7 +29,12 @@ export default function Chat() {
 
         socket.on("message", (msg) => {
             if (!msg) return;
-            setMsgs([...msgs, msg]);
+            console.log("[...msgs]", [...msgs]);
+            console.log("[...msgs, msg] :>> ", [...msgs, msg]);
+            msgs.push(msg);
+            setMsgs([...msgs]);
+            // let a = [...msgs, msg];
+            // setMsgs(a);
         });
 
         return () => {
@@ -47,7 +52,7 @@ export default function Chat() {
     };
 
     return (
-        <div>
+        <div className="hide-scrollbar overflow-y-scroll">
             <div>{count}</div>
             <div>
                 {msgs.map((msg, index) => (
