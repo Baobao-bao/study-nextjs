@@ -18,7 +18,8 @@ export default function Home() {
                         <div className="controls h-[50px] bg-red-200"></div>
                     </div>
                 </div>
-                <div className="body-right chat mt-8 flex h-[calc(206px+37.5vw)] min-h-[500px] flex-col  bg-gray-200 md:mt-0 md:min-h-max md:w-3/12">
+                {/* h-[calc(206px+37.5vw)] is calculated height of body-lefy, and md:max-h-[806px] is based on max-w-[1600px] */}
+                <div className="body-right chat mt-8 flex min-h-[500px] flex-col bg-gray-200 md:mt-0  md:h-[calc(206px+37.5vw)] md:max-h-[806px] md:min-h-max md:w-3/12">
                     <div className="grow">avatars</div>
                     <Chat className=" " />
                 </div>

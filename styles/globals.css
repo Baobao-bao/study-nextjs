@@ -12,6 +12,11 @@
     display: none;
 }
 
+input.host-progress[type="range"] {
+    -webkit-appearance: none;
+    background-color: transparent;
+}
+
 .controls button {
     border: none;
     cursor: pointer;
