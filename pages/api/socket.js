@@ -19,7 +19,10 @@ export default function SocketHandler(req, res) {
     };
 
     socket.on('message', createdMessage);
-    socket.on('videoCurrent', createdMessage);
+    socket.on('videoCurrent', (current) => {
+      console.log('videoCurrent :>> ', current);
+      socker.emit('videoCurrent', current);
+    });
   };
 
   // Define actions inside

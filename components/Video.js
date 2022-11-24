@@ -1,14 +1,16 @@
-import { useRef, useEffect, useCallback, useContext } from 'react';
+import { useRef, useEffect, useCallback, useContext, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateCurrent } from '../utils/store.js';
 
-export default function video({socket}) {
+export default function video({ socket }) {
   const user = useSelector((state) => state.user);
-
-  const videoCurrent = useSelector((state) => state.users[user].videoCurrent);
+  const [videoPosition, setVideoPosition] = useState(0);
+  // const videoCurrent = useSelector((state) => state.users[user].videoCurrent);
   const dispatch = useDispatch();
+  let duration = 0;
 
   const videoRef = useRef();
+  const anotherUserCurrent = useRef();
 
   const update = useCallback((currentTime) => {
     socket.emit('videoCurrent', currentTime);
@@ -16,6 +18,14 @@ export default function video({socket}) {
   });
 
   useEffect(() => {
+    duration = videoRef.current.duration;
+
+    socket.on('videoCurrent', (current) => {
+      console.log('current', current);
+      console.log('duration', duration);
+      setVideoPosition(current / duration);
+    });
+
     videoRef.current.onplay = () => {
       console.log('play', videoRef.current.currentTime);
       update(videoRef.current.currentTime);
@@ -24,9 +34,13 @@ export default function video({socket}) {
       console.log('pause', videoRef.current.currentTime);
       update(videoRef.current.currentTime);
     };
-    setInterval(()=> {
+    let timer = setInterval(() => {
       update(videoRef.current.currentTime);
-    }, 3000)
+    }, 10000);
+
+    return () => {
+      clearInterval(timer);
+    };
   }, []);
 
   return (
@@ -38,13 +52,22 @@ export default function video({socket}) {
         src="http://1252244310.vod2.myqcloud.com/9089671fvodtransgzp1252244310/8178d9898602268011578964191/v.f100030.mp4"
       ></video>
       <div className="flex-center">
-        <input
+        <div
+          style={{ transform: `translateX(${videoPosition}%)` }}
+          className="relative top-[-24px] z-0 mx-[14px] h-[5px] grow rounded pointer-events-none bg-green-200"
+        >
+          <div
+            ref={anotherUserCurrent}
+            className="w-4 h-4 rounded-full bg-red-200 translate-y-[-50%] translate-x-[-50%]"
+          ></div>
+        </div>
+        {/* <input
           className="relative top-[-24px] z-0 mx-[14px] h-[5px] grow"
           min="0"
           max="100"
           type="range"
           id="host-progress"
-        />
+        /> */}
       </div>
     </>
   );
