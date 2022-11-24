@@ -1,8 +1,9 @@
-import { useRef, useEffect, useCallback, useContext } from 'react';
+import { useRef, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateCurrent } from '../utils/store.js';
+import { updateCurrent } from '../../utils/store.js';
+import './video.css';
 
-export default function video({socket}) {
+export default function video({ socket }) {
   const user = useSelector((state) => state.user);
 
   const videoCurrent = useSelector((state) => state.users[user].videoCurrent);
@@ -17,16 +18,18 @@ export default function video({socket}) {
 
   useEffect(() => {
     videoRef.current.onplay = () => {
-      console.log('play', videoRef.current.currentTime);
       update(videoRef.current.currentTime);
     };
     videoRef.current.onpause = () => {
-      console.log('pause', videoRef.current.currentTime);
       update(videoRef.current.currentTime);
     };
-    setInterval(()=> {
+    let timer = setInterval(() => {
       update(videoRef.current.currentTime);
-    }, 3000)
+    }, 10000);
+
+    return () => {
+      clearInterval(timer);
+    };
   }, []);
 
   return (
@@ -38,13 +41,16 @@ export default function video({socket}) {
         src="http://1252244310.vod2.myqcloud.com/9089671fvodtransgzp1252244310/8178d9898602268011578964191/v.f100030.mp4"
       ></video>
       <div className="flex-center">
-        <input
-          className="relative top-[-24px] z-0 mx-[14px] h-[5px] grow"
+        <div className=" relative top-[-24px] z-0 mx-[14px] h-[5px] grow">
+          fsda
+        </div>
+        {/* <input
+          className="control-bar relative top-[-24px] z-0 mx-[14px] h-[5px] grow"
           min="0"
           max="100"
           type="range"
           id="host-progress"
-        />
+        /> */}
       </div>
     </>
   );

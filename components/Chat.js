@@ -1,11 +1,10 @@
 // import io from "socket.io-client";
 // const socket = io("http://localhost:3000");
 import { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, useContext } from 'react-redux';
 
-export default function Chat() {
+export default function Chat({ socket }) {
   const [msgs, setMsgs] = useState(['hi111']);
-  const socket = useSelector((state) => state.socket);
   const [isConnected, setIsConnected] = useState(socket.connected);
 
   const socketInitializer = async () => {
@@ -28,8 +27,8 @@ export default function Chat() {
 
     socket.on('message', (msg) => {
       if (!msg) return;
-      console.log('[...msgs]', [...msgs]);
-      console.log('[...msgs, msg] :>> ', [...msgs, msg]);
+      // console.log('[...msgs]', [...msgs]);
+      // console.log('[...msgs, msg] :>> ', [...msgs, msg]);
       msgs.push(msg);
       setMsgs([...msgs]);
       // let a = [...msgs, msg];
