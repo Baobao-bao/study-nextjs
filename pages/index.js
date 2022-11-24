@@ -6,6 +6,7 @@ import { useRef, useEffect, createContext } from 'react';
 // const SocketContext = createContext()
 import io from 'socket.io-client';
 const socket = io('http://localhost:3000');
+console.log(socket);
 
 export default function Home() {
   return (

@@ -10,18 +10,20 @@ export default function SocketHandler(req, res) {
 
   const io = new Server(res.socket.server);
   res.socket.server.io = io;
+  let userId = 0;
 
   const onConnection = (socket) => {
     console.log('is connected!!!');
+
     const createdMessage = (msg) => {
       console.log('backend msg :>> ', msg);
       io.emit('message', msg);
     };
 
     socket.on('message', createdMessage);
-    socket.on('videoCurrent', (current) => {
-      console.log('videoCurrent :>> ', current);
-      socker.emit('videoCurrent', current);
+    socket.on('videoCurrent', (data) => {
+      console.log('data :>> ', data);
+      socket.broadcast.emit('videoCurrent2', data);
     });
   };
 

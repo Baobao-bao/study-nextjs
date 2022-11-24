@@ -8,7 +8,7 @@ export default function video({ socket }) {
   // const videoCurrent = useSelector((state) => state.users[user].videoCurrent);
   const dispatch = useDispatch();
   let duration = 0;
-
+  let userId = null;
   const videoRef = useRef();
   const anotherUserCurrent = useRef();
 
@@ -19,24 +19,37 @@ export default function video({ socket }) {
 
   useEffect(() => {
     duration = videoRef.current.duration;
+    const intervalSending = () => {
+      return setInterval(() => {
+        update(videoRef.current.currentTime);
+      }, 1000);
+    };
+    let timer;
 
-    socket.on('videoCurrent', (current) => {
-      console.log('current', current);
-      console.log('duration', duration);
-      setVideoPosition(current / duration);
+    socket.on('connection', ()=> {
+      let roomId = locatoin.pathname
+      if (!roomid || roomId === "/"){
+        
+      }
+      socket.emit("join_room", roomId , socket.id, )
+    } )
+
+
+    socket.on('videoCurrent2', (current) => {
+      console.log('position', (current / duration) * 100);
+      setVideoPosition((current / duration) * 100);
     });
 
     videoRef.current.onplay = () => {
       console.log('play', videoRef.current.currentTime);
       update(videoRef.current.currentTime);
+      timer = intervalSending();
     };
     videoRef.current.onpause = () => {
       console.log('pause', videoRef.current.currentTime);
       update(videoRef.current.currentTime);
+      clearInterval(timer);
     };
-    let timer = setInterval(() => {
-      update(videoRef.current.currentTime);
-    }, 10000);
 
     return () => {
       clearInterval(timer);
@@ -54,7 +67,7 @@ export default function video({ socket }) {
       <div className="flex-center">
         <div
           style={{ transform: `translateX(${videoPosition}%)` }}
-          className="relative top-[-24px] z-0 mx-[14px] h-[5px] grow rounded pointer-events-none bg-green-200"
+          className="relative top-[-24px] z-0 mx-[14px] h-[5px] grow rounded pointer-events-none"
         >
           <div
             ref={anotherUserCurrent}
