@@ -5,6 +5,8 @@ import { updateCurrent } from '../utils/store.js';
 export default function video({ socket }) {
   const user = useSelector((state) => state.user);
   const [videoPosition, setVideoPosition] = useState(0);
+  const [isVideoPaused, setIsVideoPaused] = useState(true);
+  const [isVideoHovered, setIsVideoHovered] = useState(false);
   // const videoCurrent = useSelector((state) => state.users[user].videoCurrent);
   const dispatch = useDispatch();
   let duration = 0;
@@ -26,14 +28,12 @@ export default function video({ socket }) {
     };
     let timer;
 
-    socket.on('connection', ()=> {
-      let roomId = locatoin.pathname
-      if (!roomid || roomId === "/"){
-        
+    socket.on('connection', () => {
+      let roomId = locatoin.pathname;
+      if (!roomid || roomId === '/') {
       }
-      socket.emit("join_room", roomId , socket.id, )
-    } )
-
+      socket.emit('join_room', roomId, socket.id);
+    });
 
     socket.on('videoCurrent2', (current) => {
       console.log('position', (current / duration) * 100);
@@ -44,11 +44,13 @@ export default function video({ socket }) {
       console.log('play', videoRef.current.currentTime);
       update(videoRef.current.currentTime);
       timer = intervalSending();
+      setIsVideoPaused(false);
     };
     videoRef.current.onpause = () => {
       console.log('pause', videoRef.current.currentTime);
       update(videoRef.current.currentTime);
       clearInterval(timer);
+      setIsVideoPaused(true);
     };
 
     return () => {
@@ -60,27 +62,25 @@ export default function video({ socket }) {
     <>
       <video
         ref={videoRef}
+        onMouseEnter={() => setIsVideoHovered(true)}
+        onMouseLeave={() => setIsVideoHovered(false)}
         controls
         className="w-sfull aspect-video"
         src="http://1252244310.vod2.myqcloud.com/9089671fvodtransgzp1252244310/8178d9898602268011578964191/v.f100030.mp4"
       ></video>
       <div className="flex-center">
         <div
-          style={{ transform: `translateX(${videoPosition}%)` }}
-          className="relative top-[-24px] z-0 mx-[14px] h-[5px] grow rounded pointer-events-none"
+          style={{
+            transform: `translateX(${videoPosition}%)`,
+            opacity: isVideoHovered || isVideoPaused ? '1' : '0',
+          }}
+          className="relative top-[-24px] z-0 mx-[14px] h-[5px] grow rounded pointer-events-none duration-500"
         >
           <div
             ref={anotherUserCurrent}
-            className="w-4 h-4 rounded-full bg-red-200 translate-y-[-50%] translate-x-[-50%]"
+            className="w-3 h-3 rounded-full bg-red-200 -translate-y-1 translate-x-[-50%]"
           ></div>
         </div>
-        {/* <input
-          className="relative top-[-24px] z-0 mx-[14px] h-[5px] grow"
-          min="0"
-          max="100"
-          type="range"
-          id="host-progress"
-        /> */}
       </div>
     </>
   );
