@@ -22,7 +22,7 @@ export default function JoinPopup() {
   };
 
   return (
-    <div className="join-popup absolute inset-0 bg-[#0000008D] flex-center">
+    <div className="join-popup absolute inset-0 bg-[#000000bb] flex-center z-[1]">
       <div className="w-2/5 min-w-[300px] bg-white p-8 z-[1] rounded-[16px] text-center">
         <div className="title font-bold text-lg mb-4">
           Welcome to the Room!!!

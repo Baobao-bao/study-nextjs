@@ -4,26 +4,37 @@ import Chat from '../components/Chat';
 import Video from '../components/Video';
 import JoinPopup from '../components/JoinPopup';
 import { useRef, useEffect, createContext } from 'react';
-// const SocketContext = createContext()
+import { useRouter } from 'next/router';
 import io from 'socket.io-client';
+import { useSelector, useDispatch } from 'react-redux';
+import classNames from 'classnames';
+
 const socket = io('http://localhost:3000');
 console.log(socket);
 
-import { useRouter } from 'next/router';
-
 export default function Home() {
   const router = useRouter();
+  const isPrivate = useSelector((state) => state.room.isPrivate);
 
   useEffect(() => {
-    // Always do navigations after the first render
-    router.push('/?room=fhadjsfsdaj', undefined, { shallow: true });
+    if (!router.query.room) {
+      console.log('redirect');
+      router.push('/?room=this-is-room-id', undefined, { shallow: true });
+    } else {
+      socket.emit('join-room', router.query.room, socket.id); // send roomId and userId
+    }
   }, []);
 
   return (
     // <SocketContext.Provider value={socket}>
     <div className="body flex-center">
-      <JoinPopup />
-      <div className="flex w-full max-w-[1600px] flex-col justify-center md:flex-row">
+      {isPrivate && <JoinPopup />}
+      <div
+        className={classNames(
+          'flex w-full max-w-[1600px] flex-col justify-center md:flex-row',
+          isPrivate && 'blur-md'
+        )}
+      >
         <div className="body-left md:mr-6 md:w-8/12">
           <div className="search h-[100px] bg-gray-200">
             <TopForm />

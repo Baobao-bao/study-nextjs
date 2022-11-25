@@ -4,6 +4,13 @@ const userSlice = createSlice({
   name: 'user',
   initialState: {
     user: 1,
+    room: {
+      id: '',
+      name: '',
+      isPrivate: false,
+      max_member: 5,
+      member_num: 1,
+    },
     users: {
       1: {
         userId: 1,
