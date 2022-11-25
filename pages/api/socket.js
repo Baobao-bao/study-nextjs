@@ -16,16 +16,16 @@ export default function SocketHandler(req, res) {
   const onConnection = (socket) => {
     console.log('is connected!!!');
     socket.on('join-room', (roomId, userId) => {
-      if (rooms[roomId]) {
-        // if the room is full, disconnect
-        if (rooms[roomId].member_num >= rooms[roomId].max_member) {
-          socket.disconnect();
-          return;
-        }
-        rooms[roomId].member_num += 1;
-      } else {
-        rooms[roomId] = { roomId: roomId, member_num: 1, max_member: 5 };
-      }
+      // if (rooms[roomId]) {
+      //   // if the room is full, disconnect
+      //   if (rooms[roomId].member_num >= rooms[roomId].max_member) {
+      //     socket.disconnect();
+      //     return;
+      //   }
+      //   rooms[roomId].member_num += 1;
+      // } else {
+      //   rooms[roomId] = { roomId: roomId, member_num: 1, max_member: 5 };
+      // }
       socket.join(roomId);
       socket.to(roomId).broadcast.emit('user-connected', userId);
     });
