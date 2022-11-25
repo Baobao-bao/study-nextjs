@@ -3,29 +3,50 @@
 @tailwind utilities;
 
 .flex-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .hide-scrollbar::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
-input.host-progress[type="range"] {
-    -webkit-appearance: none;
-    background-color: transparent;
+input.host-progress[type='range'] {
+  -webkit-appearance: none;
+  background-color: transparent;
 }
 
 .controls button {
-    border: none;
-    cursor: pointer;
-    background: url("https://dev.xiguashuwang.cc/static/snsV2/pc/image/headfoot/logo.png");
-    background-size: contain;
-    background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  background: url('https://dev.xiguashuwang.cc/static/snsV2/pc/image/headfoot/logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .controls button:hover,
 .controls button:focus {
-    opacity: 0.5;
+  opacity: 0.5;
+}
+
+.animate-shake {
+  animation: shake 0.5s infinite;
+}
+
+@keyframes shake {
+  0%,
+  50%,
+  100% {
+    transform: translateX(0%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  25% {
+    transform: translateX(-3%);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+  75% {
+    transform: translateX(3%);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
 }
