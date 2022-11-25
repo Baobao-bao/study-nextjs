@@ -24,7 +24,6 @@ export default function Home() {
       router.push('/?room=this-is-room-id', undefined, { shallow: true });
     } else {
       socket.emit('join-room', router.query.room, socket.id); // send roomId and userId
-      console.log('router.query.room', router.query.room);
       dispatch(setRoomId(router.query.room));
     }
 
@@ -35,6 +34,12 @@ export default function Home() {
       dispatch(addUser(user));
     });
   }, []);
+
+  useEffect(() => {
+    console.log('router.query.room', router.query.room);
+    socket.emit('join-room', router.query.room, socket.id); // send roomId and userId
+    dispatch(setRoomId(router.query.room));
+  }, [router.query.room]);
 
   return (
     // <SocketContext.Provider value={socket}>

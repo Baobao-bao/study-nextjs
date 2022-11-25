@@ -11,6 +11,7 @@ export default function SocketHandler(req, res) {
   const io = new Server(res.socket.server);
   res.socket.server.io = io;
   let rooms = {};
+  let roomId = 'this-is-room-id'; // for testing
 
   const onConnection = (socket) => {
     console.log('is connected!!!');
@@ -29,14 +30,14 @@ export default function SocketHandler(req, res) {
       socket.to(roomId).broadcast.emit('user-connected', userId);
     });
 
-    const createdMessage = (roomId, msg) => {
+    const createdMessage = (msg) => {
       console.log('backend msg :>> ', msg);
       console.log('roomId :>> ', roomId);
       io.to(roomId).emit('message', msg);
     };
 
     socket.on('message', createdMessage);
-    socket.on('videoCurrent', (roomId, data) => {
+    socket.on('videoCurrent', (data) => {
       console.log('data :>> ', data);
       socket.to(roomId).broadcast.emit('videoCurrent2', data);
     });
