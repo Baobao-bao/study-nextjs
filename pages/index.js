@@ -3,10 +3,11 @@ import '../utils/i18n';
 import Chat from '../components/Chat';
 import Video from '../components/Video';
 import JoinPopup from '../components/JoinPopup';
-import { useRef, useEffect, createContext } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import io from 'socket.io-client';
 import { useSelector, useDispatch } from 'react-redux';
+import { addUser, setRoomId } from '../utils/store.js';
 import classNames from 'classnames';
 
 const socket = io('http://localhost:3000');
@@ -15,6 +16,7 @@ console.log(socket);
 export default function Home() {
   const router = useRouter();
   const isPrivate = useSelector((state) => state.room.isPrivate);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!router.query.room) {
@@ -22,7 +24,16 @@ export default function Home() {
       router.push('/?room=this-is-room-id', undefined, { shallow: true });
     } else {
       socket.emit('join-room', router.query.room, socket.id); // send roomId and userId
+      console.log('router.query.room', router.query.room);
+      dispatch(setRoomId(router.query.room));
     }
+
+    socket.on('user-connected', (userId) => {
+      let user = {
+        userId: userId,
+      };
+      dispatch(addUser(user));
+    });
   }, []);
 
   return (

@@ -9,7 +9,7 @@ const userSlice = createSlice({
       name: '',
       isPrivate: false,
       max_member: 5,
-      member_num: 1,
+      member_num: 0,
     },
     users: {
       1: {
@@ -26,10 +26,17 @@ const userSlice = createSlice({
       console.log(action.payload);
       state.users[state.user].videoCurrent = action.payload;
     },
+    addUser: (state, action) => {
+      state.users[action.payload.userId] = action.payload;
+      state.room.member_num += 1;
+    },
+    setRoomId: (state, action) => {
+      state.room.id = action.payload;
+    },
   },
 });
 
-export const { updateCurrent, setSocket } = userSlice.actions;
+export const { updateCurrent, addUser, setRoomId } = userSlice.actions;
 
 const store = configureStore({
   reducer: userSlice.reducer,

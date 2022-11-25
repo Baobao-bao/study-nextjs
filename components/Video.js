@@ -3,19 +3,18 @@ import { useSelector, useDispatch } from 'react-redux';
 import { updateCurrent } from '../utils/store.js';
 
 export default function video({ socket }) {
-  const user = useSelector((state) => state.user);
+  const roomId = useSelector((state) => state.room.id);
   const [videoPosition, setVideoPosition] = useState(0);
   const [isVideoPaused, setIsVideoPaused] = useState(true);
   const [isVideoHovered, setIsVideoHovered] = useState(false);
   // const videoCurrent = useSelector((state) => state.users[user].videoCurrent);
   const dispatch = useDispatch();
   let duration = 0;
-  let userId = null;
   const videoRef = useRef();
   const anotherUserCurrent = useRef();
 
   const update = useCallback((currentTime) => {
-    socket.emit('videoCurrent', currentTime);
+    socket.emit('videoCurrent', roomId, currentTime);
     dispatch(updateCurrent(currentTime));
   });
 

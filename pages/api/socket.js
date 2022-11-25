@@ -10,24 +10,33 @@ export default function SocketHandler(req, res) {
 
   const io = new Server(res.socket.server);
   res.socket.server.io = io;
-  let userId = 0;
-  let roomId = null;
+  let rooms = {};
 
   const onConnection = (socket) => {
     console.log('is connected!!!');
     socket.on('join-room', (roomId, userId) => {
+      if (rooms[roomId]) {
+        // if the room is full, disconnect
+        if (rooms[roomId].member_num >= rooms[roomId].max_member) {
+          socket.disconnect();
+          return;
+        }
+        rooms[roomId].member_num += 1;
+      } else {
+        rooms[roomId] = { roomId: roomId, member_num: 1, max_member: 5 };
+      }
       socket.join(roomId);
       socket.to(roomId).broadcast.emit('user-connected', userId);
-      roomId = roomId;
     });
 
-    const createdMessage = (msg) => {
+    const createdMessage = (roomId, msg) => {
       console.log('backend msg :>> ', msg);
+      console.log('roomId :>> ', roomId);
       io.to(roomId).emit('message', msg);
     };
 
     socket.on('message', createdMessage);
-    socket.on('videoCurrent', (data) => {
+    socket.on('videoCurrent', (roomId, data) => {
       console.log('data :>> ', data);
       socket.to(roomId).broadcast.emit('videoCurrent2', data);
     });
