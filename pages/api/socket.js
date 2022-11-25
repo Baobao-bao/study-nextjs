@@ -26,7 +26,7 @@ export default function SocketHandler(req, res) {
       // } else {
       //   rooms[roomId] = { roomId: roomId, member_num: 1, max_member: 5 };
       // }
-      console.log('join-room');
+      console.log('join-room', roomId);
 
       socket.join(roomId);
       socket.to(roomId).broadcast.emit('user-connected', userId);

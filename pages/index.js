@@ -22,17 +22,7 @@ export default function Home() {
     if (!router.query.room) {
       console.log('redirect');
       router.push('/?room=this-is-room-id', undefined, { shallow: true });
-    } else {
-      socket.emit('join-room', router.query.room, socket.id); // send roomId and userId
-      dispatch(setRoomId(router.query.room));
     }
-
-    socket.on('user-connected', (userId) => {
-      let user = {
-        userId: userId,
-      };
-      dispatch(addUser(user));
-    });
   }, []);
 
   useEffect(() => {
@@ -40,6 +30,12 @@ export default function Home() {
     console.log('router.query.room', router.query.room);
     socket.emit('join-room', router.query.room, socket.id); // send roomId and userId
     dispatch(setRoomId(router.query.room));
+    socket.on('user-connected', (userId) => {
+      let user = {
+        userId: userId,
+      };
+      dispatch(addUser(user));
+    });
   }, [router.query.room]);
 
   return (
