@@ -2,6 +2,7 @@ import TopForm from '../components/TopForm';
 import '../utils/i18n';
 import Chat from '../components/Chat';
 import Video from '../components/Video';
+import JoinPopup from '../components/JoinPopup';
 import { useRef, useEffect, createContext } from 'react';
 // const SocketContext = createContext()
 import io from 'socket.io-client';
@@ -12,6 +13,7 @@ export default function Home() {
   return (
     // <SocketContext.Provider value={socket}>
     <div className="body flex-center">
+      <JoinPopup />
       <div className="flex w-full max-w-[1600px] flex-col justify-center md:flex-row">
         <div className="body-left md:mr-6 md:w-8/12">
           <div className="search h-[100px] bg-gray-200">
