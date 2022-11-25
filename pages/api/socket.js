@@ -26,18 +26,22 @@ export default function SocketHandler(req, res) {
       // } else {
       //   rooms[roomId] = { roomId: roomId, member_num: 1, max_member: 5 };
       // }
+      console.log('join-room');
+
       socket.join(roomId);
       socket.to(roomId).broadcast.emit('user-connected', userId);
     });
 
-    const createdMessage = (msg) => {
+    console.log('222');
+
+    const createdMessage = (roomId, msg) => {
       console.log('backend msg :>> ', msg);
       console.log('roomId :>> ', roomId);
       io.to(roomId).emit('message', msg);
     };
 
     socket.on('message', createdMessage);
-    socket.on('videoCurrent', (data) => {
+    socket.on('videoCurrent', (roomId, data) => {
       console.log('data :>> ', data);
       socket.to(roomId).broadcast.emit('videoCurrent2', data);
     });

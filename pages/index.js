@@ -36,6 +36,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    if (!router.query.room) return;
     console.log('router.query.room', router.query.room);
     socket.emit('join-room', router.query.room, socket.id); // send roomId and userId
     dispatch(setRoomId(router.query.room));
