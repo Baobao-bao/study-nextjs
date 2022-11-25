@@ -9,7 +9,16 @@ import io from 'socket.io-client';
 const socket = io('http://localhost:3000');
 console.log(socket);
 
+import { useRouter } from 'next/router';
+
 export default function Home() {
+  const router = useRouter();
+
+  useEffect(() => {
+    // Always do navigations after the first render
+    router.push('/?room=fhadjsfsdaj', undefined, { shallow: true });
+  }, []);
+
   return (
     // <SocketContext.Provider value={socket}>
     <div className="body flex-center">
