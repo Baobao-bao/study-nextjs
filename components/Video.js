@@ -7,7 +7,6 @@ export default function video({ socket }) {
     const [videoPosition, setVideoPosition] = useState(0);
     const [isVideoPaused, setIsVideoPaused] = useState(true);
     const [isVideoHovered, setIsVideoHovered] = useState(false);
-    // const videoCurrent = useSelector((state) => state.users[user].videoCurrent);
     const dispatch = useDispatch();
     let duration = 0;
     const videoRef = useRef();

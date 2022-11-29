@@ -36,6 +36,12 @@ export default function Home() {
             };
             dispatch(addUser(user));
         });
+        socket.on('closeReason', (reason) => {
+            console.log("close reason: >>>", reason)
+          });
+        socket.on('disconnect', () => {
+          console.log('user disconnected');
+        });
     }, [router.query.room]);
 
     return (

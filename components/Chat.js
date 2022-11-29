@@ -28,8 +28,6 @@ export default function Chat({ socket }) {
 
     socket.on('message', (msg) => {
       if (!msg) return;
-      // console.log('[...msgs]', [...msgs]);
-      // console.log('[...msgs, msg] :>> ', [...msgs, msg]);
       msgs.push(msg);
       setMsgs([...msgs]);
       // let a = [...msgs, msg];

@@ -11,28 +11,33 @@ export default function SocketHandler(req, res) {
     const io = new Server(res.socket.server);
     res.socket.server.io = io;
     let rooms = {};
-    let roomId = "this-is-room-id"; // for testing
 
     const onConnection = (socket) => {
         console.log("is connected!!!");
         socket.on("join-room", (roomId, userId) => {
-            // if (rooms[roomId]) {
-            //   // if the room is full, disconnect
-            //   if (rooms[roomId].member_num >= rooms[roomId].max_member) {
-            //     socket.disconnect();
-            //     return;
-            //   }
-            //   rooms[roomId].member_num += 1;
-            // } else {
-            //   rooms[roomId] = { roomId: roomId, member_num: 1, max_member: 5 };
-            // }
+            if (rooms[roomId]) {
+                console.log("this room exist");
+
+                // if the room exist
+                if (rooms[roomId].member_num >= rooms[roomId].max_member) {
+                    // if the room is full, disconnect
+                    socket.emit('closeReason','The room is full.');
+                    socket.disconnect();
+                    return;
+                }
+                rooms[roomId].member_num += 1;
+            } else {
+                console.log("this room does not exist before");
+                // if the room not exist, create it
+                rooms[roomId] = { roomId: roomId, member_num: 1, max_member: 2 };
+            }
+            console.log("rooms number", rooms[roomId].member_num)
+
             console.log("join-room", roomId);
 
             socket.join(roomId);
             socket.to(roomId).emit("user-connected", userId);
         });
-
-        console.log("222");
 
         const createdMessage = (roomId, msg) => {
             console.log("backend msg :>> ", msg);

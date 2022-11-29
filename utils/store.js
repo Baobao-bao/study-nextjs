@@ -8,7 +8,7 @@ const userSlice = createSlice({
       id: '',
       name: '',
       isPrivate: false,
-      max_member: 5,
+      max_member: 2,
       member_num: 0,
     },
     users: {
