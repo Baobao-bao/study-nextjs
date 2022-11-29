@@ -30,6 +30,10 @@ const userSlice = createSlice({
       state.users[action.payload.userId] = action.payload;
       state.room.member_num += 1;
     },
+    delUser: (state, action) => {
+      delete state.users[action.payload];
+      state.room.member_num -= 1;
+    },
     setRoomId: (state, action) => {
       state.room.id = action.payload;
     },

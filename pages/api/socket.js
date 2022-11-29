@@ -14,42 +14,46 @@ export default function SocketHandler(req, res) {
 
     const onConnection = (socket) => {
         console.log("is connected!!!");
-        socket.on("join-room", (roomId, userId) => {
-            if (rooms[roomId]) {
-                console.log("this room exist");
 
+        socket.on("join-room", (roomId, userId) => {
+            console.log("roomId", roomId);
+            let room = io.sockets.adapter.rooms.get(roomId);
+
+            if (room) {
                 // if the room exist
-                if (rooms[roomId].member_num >= rooms[roomId].max_member) {
+                if (room.size >= rooms[roomId].max_member) {
                     // if the room is full, disconnect
-                    socket.emit('closeReason','The room is full.');
+                    socket.emit("closeReason", "The room is full.");
                     socket.disconnect();
                     return;
                 }
-                rooms[roomId].member_num += 1;
             } else {
                 console.log("this room does not exist before");
-                // if the room not exist, create it
-                rooms[roomId] = { roomId: roomId, member_num: 1, max_member: 2 };
+                rooms[roomId] = { roomId: roomId, max_member: 3 };
             }
-            console.log("rooms number", rooms[roomId].member_num)
-
-            console.log("join-room", roomId);
 
             socket.join(roomId);
-            socket.to(roomId).emit("user-connected", userId);
+            socket.to(roomId).emit("user-joining-room", userId);
         });
 
         const createdMessage = (roomId, msg) => {
             console.log("backend msg :>> ", msg);
-            console.log("roomId :>> ", roomId);
             io.to(roomId).emit("message", msg);
         };
 
         socket.on("message", createdMessage);
         socket.on("videoCurrent", (roomId, data) => {
             console.log("data :>> ", data);
-            console.log("roomId :>> ", roomId);
             socket.to(roomId).emit("videoCurrent2", data);
+        });
+        socket.on("disconnecting", () => {
+            // socket.rooms is a Set contains at least the socket ID, the first item is socket id, the rest are room ids
+            // if the room id exist, tell everyone in that room I am leaving.
+            if (![...socket.rooms][1]) return;
+            socket.to([...socket.rooms][1]).emit("leaving", socket.id);
+        });
+        socket.on("disconnect", () => {
+            console.log("user disconnected");
         });
     };
 

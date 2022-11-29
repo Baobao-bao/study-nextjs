@@ -30,7 +30,7 @@ export default function Home() {
         console.log("router.query.room", router.query.room);
         socket.emit("join-room", router.query.room, socket.id); // send roomId and userId
         dispatch(setRoomId(router.query.room));
-        socket.on("user-connected", (userId) => {
+        socket.on("user-joining-room", (userId) => {
             let user = {
                 userId: userId,
             };
@@ -39,6 +39,11 @@ export default function Home() {
         socket.on('closeReason', (reason) => {
             console.log("close reason: >>>", reason)
           });
+
+        socket.on('leaving', (id) => {
+        console.log(`user ${id} is leaving`);
+        });
+
         socket.on('disconnect', () => {
           console.log('user disconnected');
         });
