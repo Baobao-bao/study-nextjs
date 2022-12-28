@@ -1,3 +1,2 @@
-# study-nextjs
+This guy is lazy.
 
-[Edit on StackBlitz ⚡️](https://stackblitz.com/edit/nextjs-jft95d)
