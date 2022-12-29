@@ -3,6 +3,7 @@ import "../utils/i18n";
 import Chat from "../components/Chat";
 import Video from "../components/Video";
 import JoinPopup from "../components/JoinPopup";
+import Quiz from "../components/Quiz";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import io from "socket.io-client";
@@ -36,22 +37,22 @@ export default function Home() {
             };
             dispatch(addUser(user));
         });
-        socket.on('closeReason', (reason) => {
-            console.log("close reason: >>>", reason)
-          });
-
-        socket.on('leaving', (id) => {
-        console.log(`user ${id} is leaving`);
+        socket.on("closeReason", (reason) => {
+            console.log("close reason: >>>", reason);
         });
 
-        socket.on('disconnect', () => {
-          console.log('user disconnected');
+        socket.on("leaving", (id) => {
+            console.log(`user ${id} is leaving`);
+        });
+
+        socket.on("disconnect", () => {
+            console.log("user disconnected");
         });
     }, [router.query.room]);
 
     return (
         // <SocketContext.Provider value={socket}>
-        <div className="body flex-center">
+        <div className="body flex-center max-md:flex-col">
             {isPrivate && <JoinPopup />}
             <div className={classNames("flex w-full max-w-[1600px] flex-col justify-center md:flex-row", isPrivate && "blur-md")}>
                 <div className="body-left md:mr-6 md:w-8/12">
@@ -70,6 +71,7 @@ export default function Home() {
                     <Chat socket={socket} />
                 </div>
             </div>
+            <Quiz></Quiz>
         </div>
         // </SocketContext.Provider>
     );
