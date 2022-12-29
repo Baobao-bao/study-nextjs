@@ -12,13 +12,13 @@ const userSlice = createSlice({
       member_num: 0,
     },
     users: {
-      1: {
-        userId: 1,
-        username: 'Mike',
-        color: 'blue',
-        gender: 'male',
-        videoCurrent: 25.0,
-      },
+      // 1: {
+      //   userId: 1,
+      //   username: 'Mike',
+      //   color: 'blue',
+      //   gender: 'male',
+      //   videoCurrent: 25.0,
+      // },
     },
   },
   reducers: {
@@ -27,6 +27,7 @@ const userSlice = createSlice({
       state.users[state.user].videoCurrent = action.payload;
     },
     addUser: (state, action) => {
+      console.log('action.payload', action.payload);
       state.users[action.payload.userId] = action.payload;
       state.room.member_num += 1;
     },

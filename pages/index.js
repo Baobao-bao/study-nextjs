@@ -21,7 +21,6 @@ export default function Home() {
 
     useEffect(() => {
         if (!router.query.room) {
-            console.log("redirect");
             router.push("/?room=this-is-room-id", undefined, { shallow: true });
         }
     }, []);
@@ -36,6 +35,15 @@ export default function Home() {
                 userId: userId,
             };
             dispatch(addUser(user));
+        });
+        socket.on("room-member", (room) => {
+            console.log(typeof room, room);
+            room.map((userId) => {
+                let user = {
+                    userId: userId,
+                };
+                dispatch(addUser(user));
+            });
         });
         socket.on("closeReason", (reason) => {
             console.log("close reason: >>>", reason);

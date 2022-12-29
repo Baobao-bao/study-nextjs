@@ -34,6 +34,7 @@ export default function SocketHandler(req, res) {
 
             socket.join(roomId);
             socket.to(roomId).emit("user-joining-room", userId);
+            socket.to(userId).emit("room-member",[...io.sockets.adapter.rooms.get(roomId)])
         });
 
         const createdMessage = (roomId, msg) => {
